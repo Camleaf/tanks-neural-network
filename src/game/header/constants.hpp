@@ -1,0 +1,23 @@
+#ifndef CONSTANTS
+#define CONSTANTS
+
+
+const int DISPLAY_WIDTH = 800;
+const int DISPLAY_HEIGHT = 800;
+
+// Number of tiles horizontally across the game arena
+const int ARENA_TILES_HORIZONTAL = 20;
+
+// Number of tiles vertically across the game arena
+const int ARENA_TILES_VERTICAL = 20;
+
+// Sidelength of game tiles in pixels
+const int TILES_SIDELENGTH = 70;
+
+const int ARENA_WIDTH = ARENA_TILES_HORIZONTAL * TILES_SIDELENGTH;
+const int ARENA_HEIGHT = ARENA_TILES_VERTICAL * TILES_SIDELENGTH;
+
+#endif
+
+
+

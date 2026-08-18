@@ -1,8 +1,26 @@
 cmake_minimum_required(VERSION 3.28)
-project(CMakeSFMLProject LANGUAGES CXX)
+project(TanksNeuralNet LANGUAGES CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin/)
+
+
+set(BUILD_ENVIRONMENT "$ENV{BUILD_ENVIRON}") # set to Production when doing production builds
+add_definitions(-DBUILD_ENVIRONMENT="${BUILD_ENVIRONMENT}")
+message(INFO ": Building for ${BUILD_ENVIRONMENT}")
+
+# for intellisense
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# for output
+if(BUILD_ENVIRONMENT STREQUAL "development" )
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin/)
+else()
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../releases/${CMAKE_PROJECT_VERSION}/)
+endif()
+
+file(REMOVE_RECURSE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}) # clear directory for new files to be built
+
 
 include(FetchContent)
 FetchContent_Declare(SFML
@@ -14,7 +32,11 @@ FetchContent_Declare(SFML
 FetchContent_MakeAvailable(SFML)
 
 add_executable(main src/main.cpp)
-target_compile_features(main PRIVATE cxx_std_17)
-target_link_libraries(main PRIVATE SFML::Graphics)
 
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT main)
+target_compile_features(main PRIVATE cxx_std_17)
+
+# add parts
+add_subdirectory(src)
+target_link_libraries(implementation PUBLIC SFML::Graphics)
+target_link_libraries(main PRIVATE implementation)
+
