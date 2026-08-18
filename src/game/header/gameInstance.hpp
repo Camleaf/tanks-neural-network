@@ -1,14 +1,17 @@
-#ifndef GAMESTATE
-#define GAMESTATE
+#ifndef GAMEINSTANCE
+#define GAMEINSTANCE
 
 #include <SFML/Graphics.hpp>
-
+#include <array>
+#include <constants.hpp>
+#include <types.hpp>
 
 class ArenaInstance{
-    private:
+    private: 
+        std::array<std::array<bool,ARENA_TILES_HORIZONTAL>,ARENA_TILES_VERTICAL> walls;      
         void bisect_walls(sf::IntRect container, int detail);
-
     public:
+        ArenaInstance();
         void generate_walls();
         
 };
@@ -17,7 +20,6 @@ class CameraInstance{
     public:
         CameraInstance(){}; 
     private:
-        sf::Vertex position{{5,5}};
 };
 
 class EntitiesInstance{
@@ -31,7 +33,7 @@ class DisplayInstance{
         DisplayInstance();
         
         // Sets the render surface to the background texture
-        void refresh();
+        void refresh(sf::Vector2f camera_position);
         void generate_background(ArenaInstance arena);
         void render_entities(EntitiesInstance entities);
         
