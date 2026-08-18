@@ -1,1 +1,1 @@
-add_library(implementation gameInstance.cpp board.cpp display.cpp camera.cpp)
+add_library(implementation gameInstance.cpp arena.cpp display.cpp camera.cpp)

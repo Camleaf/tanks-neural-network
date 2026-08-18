@@ -4,12 +4,12 @@
 #include <SFML/Graphics.hpp>
 
 
-class BoardInstance{
+class ArenaInstance{
     private:
-        
-        
+        void bisect_walls(sf::IntRect container, int detail);
 
     public:
+        void generate_walls();
         
 };
 
@@ -32,7 +32,7 @@ class DisplayInstance{
         
         // Sets the render surface to the background texture
         void refresh();
-        void generate_background(BoardInstance board);
+        void generate_background(ArenaInstance arena);
         void render_entities(EntitiesInstance entities);
         
         sf::Sprite get_drawable();
@@ -47,7 +47,7 @@ class GameInstance{
     public:
         
     private:
-        BoardInstance board;
+        ArenaInstance arena;
         CameraInstance camera;
         EntitiesInstance entities;
         DisplayInstance display;
