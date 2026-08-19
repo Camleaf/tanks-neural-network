@@ -23,5 +23,5 @@ rm -rf ./*
 cmake --preset=default
 export BUILD_ENVIRON=$BUILD_ENVIRON;
 cmake ..
-make
+cmake --build .
 cd ..

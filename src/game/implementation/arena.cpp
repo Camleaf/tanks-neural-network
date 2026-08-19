@@ -9,12 +9,12 @@ ArenaInstance::ArenaInstance(){
 };
 
 void ArenaInstance::generate_walls(){
-    std::fill(&walls[0][0], &walls[0][0]+ARENA_TILES_VERTICAL+ARENA_TILES_HORIZONTAL,false);
+    std::fill(&arena[0][0], &arena[0][0]+ARENA_TILES_VERTICAL+ARENA_TILES_HORIZONTAL,false);
 
     bisect_walls({{0,0},{ARENA_TILES_HORIZONTAL,ARENA_TILES_VERTICAL}},WALL_DETAIL_LEVEL);
     
     // No wall on start tile
-    walls[ARENA_TILES_VERTICAL/2][ARENA_TILES_HORIZONTAL/2] = false;
+    arena[ARENA_TILES_VERTICAL/2][ARENA_TILES_HORIZONTAL/2] = false;
 
 };
 
@@ -54,7 +54,7 @@ void ArenaInstance::bisect_walls(sf::IntRect container, int detail){
         if (wall_create_counter % 3 == 0) continue;
         
         // add wall
-        walls[top+i+1][col_line+left] = true;
+        arena[top+i+1][col_line+left] = true;
     }
    
     for (int i = 0; i<width;i++){
@@ -64,7 +64,7 @@ void ArenaInstance::bisect_walls(sf::IntRect container, int detail){
         wall_create_counter += 1;
         if (wall_create_counter % 3 == 0) continue;
 
-        walls[row_line+top][left+i+1] = true;
+        arena[row_line+top][left+i+1] = true;
     }
     
     const std::array<sf::IntRect,4> new_containers = {
@@ -77,6 +77,8 @@ void ArenaInstance::bisect_walls(sf::IntRect container, int detail){
     for (sf::IntRect cont : new_containers){
         bisect_walls(cont,detail-1);
     }
-
-
 };
+
+std::array<std::array<bool,ARENA_TILES_HORIZONTAL>,ARENA_TILES_VERTICAL>& ArenaInstance::get_arena(){
+    return arena;
+}

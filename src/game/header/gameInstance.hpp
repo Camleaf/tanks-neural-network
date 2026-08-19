@@ -8,9 +8,10 @@
 
 class ArenaInstance{
     private: 
-        std::array<std::array<bool,ARENA_TILES_HORIZONTAL>,ARENA_TILES_VERTICAL> walls;      
+        std::array<std::array<bool,ARENA_TILES_HORIZONTAL>,ARENA_TILES_VERTICAL> arena;      
         void bisect_walls(sf::IntRect container, int detail);
     public:
+        std::array<std::array<bool,ARENA_TILES_HORIZONTAL>,ARENA_TILES_VERTICAL>& get_arena();
         ArenaInstance();
         void generate_walls();
         
@@ -23,7 +24,8 @@ class CameraInstance{
 };
 
 class EntitiesInstance{
-    
+    public:
+    private:
 };
 
 
@@ -33,9 +35,9 @@ class DisplayInstance{
         DisplayInstance();
         
         // Sets the render surface to the background texture
-        void refresh(sf::Vector2f camera_position);
-        void generate_background(ArenaInstance arena);
-        void render_entities(EntitiesInstance entities);
+        void refresh();
+        void generate_background(ArenaInstance &arena);
+        void render_entities(EntitiesInstance &entities);
         
         sf::Sprite get_drawable();
 
