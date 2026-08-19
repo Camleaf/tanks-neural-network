@@ -2,37 +2,46 @@
 #define GAMEINSTANCE
 
 #include <SFML/Graphics.hpp>
+#include <SFML/System/Vector2.hpp>
 #include <array>
 #include <constants.hpp>
-#include <types.hpp>
+#include <entities.hpp>
+#include <vector>
+
+struct StateInstance;
 
 class ArenaInstance{
-    private: 
-        std::array<std::array<bool,ARENA_TILES_HORIZONTAL>,ARENA_TILES_VERTICAL> arena;      
-        void bisect_walls(sf::IntRect container, int detail);
     public:
-        std::array<std::array<bool,ARENA_TILES_HORIZONTAL>,ARENA_TILES_VERTICAL>& get_arena();
-        ArenaInstance();
+        ArenaInstance(StateInstance& state);
+        typedef std::array<std::array<bool,ARENA_TILES_HORIZONTAL>,ARENA_TILES_VERTICAL> arenaGrid; 
+        arenaGrid& get_arena();
         void generate_walls();
+    private: 
+        StateInstance& state; 
+        arenaGrid arena;      
+        void bisect_walls(sf::IntRect container, int detail);
         
 };
 
-class CameraInstance{
-    public:
-        CameraInstance(){}; 
-    private:
-};
 
 class EntitiesInstance{
     public:
+        EntitiesInstance(StateInstance& state);
+        Player& get_player_object_reference();
+        std::vector<Enemy>& get_enemy_objects_reference();
+        std::vector<Bullet>& get_bullet_objects_reference();
     private:
+        StateInstance& state; 
+        Player player;
+        std::vector<Enemy> enemies;
+        std::vector<Bullet> bullets;
 };
 
 
 class DisplayInstance{
     public:
         sf::RenderTexture surface;
-        DisplayInstance();
+        DisplayInstance(StateInstance& state);
         
         // Sets the render surface to the background texture
         void refresh();
@@ -42,22 +51,32 @@ class DisplayInstance{
         sf::Sprite get_drawable();
 
     private:
+        StateInstance& state; 
         sf::RenderTexture background;
 };
 
 
+struct StateInstance {
+    sf::Vector2f cameraPosition = {ARENA_WIDTH/2,ARENA_WIDTH/2};
+    ArenaInstance::arenaGrid* arena;
+    Player* player;
+    std::vector<Enemy>* enemies;
+    std::vector<Bullet>* bullets;
+};
 
 class GameInstance{
     public:
-        
-    private:
-        ArenaInstance arena;
-        CameraInstance camera;
-        EntitiesInstance entities;
+        StateInstance state;
+        GameInstance();
         DisplayInstance display;
         
+
+    private:
+        ArenaInstance arena;
+        //EntitiesInstance entities;        
 };
 
+void instance_mainloop(int id);
 
 
 #endif

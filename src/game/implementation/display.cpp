@@ -1,5 +1,7 @@
 #include "constants.hpp"
 #include <gameInstance.hpp>
+#include <iostream>
+#include <constants.hpp>
 
 sf::Texture resizeTexture(sf::Texture &origTexture, sf::Vector2u size)
 {
@@ -20,7 +22,7 @@ sf::Texture resizeTexture(sf::Texture &origTexture, sf::Vector2u size)
     return renderTexture.getTexture();
 }
 
-DisplayInstance::DisplayInstance(){
+DisplayInstance::DisplayInstance(StateInstance& state): state(state) {
     surface = sf::RenderTexture({DISPLAY_WIDTH,DISPLAY_HEIGHT});
     background = sf::RenderTexture({ARENA_WIDTH,ARENA_HEIGHT});
     surface.clear();
@@ -72,6 +74,7 @@ void DisplayInstance::render_entities(EntitiesInstance &entities){
 void DisplayInstance::refresh(){
     surface.clear();
     sf::Sprite bgSprite(background.getTexture());
+    bgSprite.setPosition({state.cameraPosition.x-DISPLAY_WIDTH/2,state.cameraPosition.y-DISPLAY_WIDTH/2});
     surface.draw(bgSprite);
     surface.display(); 
 }

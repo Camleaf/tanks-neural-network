@@ -2,8 +2,8 @@
 #define CONSTANTS
 
 
-const int DISPLAY_WIDTH = 800;
-const int DISPLAY_HEIGHT = 800;
+const int DISPLAY_WIDTH = 700;
+const int DISPLAY_HEIGHT = 700;
 
 // Number of tiles horizontally across the game arena
 const int ARENA_TILES_HORIZONTAL = 20;

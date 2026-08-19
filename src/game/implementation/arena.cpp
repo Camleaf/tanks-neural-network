@@ -4,12 +4,13 @@
 #include <random>
 #include <algorithm>
 
-ArenaInstance::ArenaInstance(){
+ArenaInstance::ArenaInstance(StateInstance& state): state(state) {
     generate_walls();
+    this->state.arena = &arena;
 };
 
 void ArenaInstance::generate_walls(){
-    std::fill(&arena[0][0], &arena[0][0]+ARENA_TILES_VERTICAL+ARENA_TILES_HORIZONTAL,false);
+    std::fill(&arena[0][0], &arena[0][0]+(ARENA_TILES_VERTICAL*ARENA_TILES_HORIZONTAL),false);
 
     bisect_walls({{0,0},{ARENA_TILES_HORIZONTAL,ARENA_TILES_VERTICAL}},WALL_DETAIL_LEVEL);
     

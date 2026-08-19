@@ -13,19 +13,11 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 
 
-
-
-include(FetchContent)
-FetchContent_Declare(SFML
-    GIT_REPOSITORY https://github.com/SFML/SFML.git
-    GIT_TAG 3.1.0
-    GIT_SHALLOW ON
-    EXCLUDE_FROM_ALL
-    SYSTEM)
-FetchContent_MakeAvailable(SFML)
+include("$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
+set(SFML_STATIC_LIBRARIES OFF)
+find_package(SFML COMPONENTS Graphics REQUIRED)
 
 add_executable(main src/main.cpp)
-
 target_compile_features(main PRIVATE cxx_std_17)
 
 # add parts
