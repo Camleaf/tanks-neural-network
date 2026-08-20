@@ -5,7 +5,7 @@
 
 
 GameInstance::GameInstance() : arena(state), display(state), entities(state){
-        display.generate_background(arena);
+        display.generate_background();
         display.refresh();
 }
     

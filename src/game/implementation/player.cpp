@@ -68,18 +68,20 @@ bool Player::move(sf::Vector2f vector, float magnitude){
         }
     }
     
-    for (Player pl : (*state.players)){
-        
-        sf::Vector2f otherCenterPos = pl.get_center_coord();
-        
-        if (otherCenterPos.x + otherCenterPos.y >= COLLISION_DETECT_TAXICAB_RANGE) continue;
+    for (Alliance al : (*state.alliances)){
+        for (Player pl : (al.get_player_objects_reference())){
+            
+            sf::Vector2f otherCenterPos = pl.get_center_coord();
+            
+            if (otherCenterPos.x + otherCenterPos.y >= COLLISION_DETECT_TAXICAB_RANGE) continue;
 
-        sf::FloatRect otherBound = pl.get_bounding_box();
+            sf::FloatRect otherBound = pl.get_bounding_box();
 
-        if (otherBound.findIntersection(tentativeBounds).has_value()){
-            return false;
+            if (otherBound.findIntersection(tentativeBounds).has_value()){
+                return false;
+            }
+            
         }
-        
     }
     return true;
 }

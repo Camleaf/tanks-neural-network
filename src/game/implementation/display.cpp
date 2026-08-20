@@ -1,7 +1,9 @@
 #include "constants.hpp"
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <gameInstance.hpp>
 #include <iostream>
 #include <constants.hpp>
+#include <colours.hpp>
 
 sf::Texture resizeTexture(sf::Texture &origTexture, sf::Vector2u size)
 {
@@ -35,7 +37,7 @@ sf::Sprite DisplayInstance::get_drawable(){
 }
 
 
-void DisplayInstance::generate_background(ArenaInstance &arenaInstance){
+void DisplayInstance::generate_background(){
     background.clear();
     sf::Texture floorTexture("assets/tileable.jpg");
     sf::Texture wallTexture("assets/walltile.jpg");
@@ -45,10 +47,10 @@ void DisplayInstance::generate_background(ArenaInstance &arenaInstance){
     
     sf::Sprite renderSprite(floorTexture);
 
-    auto arena = arenaInstance.get_arena();
-    for (int row = 0; row<std::size(arena); row++){
-        for (int col = 0; col<std::size(arena[0]); col++){
-            if (arena[row][col]){
+
+    for (int row = 0; row<ARENA_TILES_VERTICAL; row++){
+        for (int col = 0; col<ARENA_TILES_HORIZONTAL; col++){
+            if ((*state.arena)[row][col]){
                 renderSprite.setTexture(wallTexture,true);
             } else {
                 renderSprite.setTexture(floorTexture,true);
@@ -65,11 +67,27 @@ void DisplayInstance::generate_background(ArenaInstance &arenaInstance){
     background.display();
 }
 
-void DisplayInstance::render_entities(Entities& entities){
+void DisplayInstance::render_entities(){
+    
+}
+
+void DisplayInstance::create_player_texture(sf::Color colour){
+    sf::RenderTexture texture({PLAYER_BOUNDING_BOX_SIDELENGTH,PLAYER_BOUNDING_BOX_SIDELENGTH});
+    texture.clear(sf::Color(255, 255, 255, 0));
+    
+    sf::Vector2u size = texture.getSize();
+    sf::RectangleShape x({(float)size.x,(float)size.y-8});
+    x.setPosition({0,4});
+    x.setFillColor(sf::Color(OFF_BLACK));
+    texture.draw(x);
+
 
 }
 
-
+void DisplayInstance::render_players(){
+    // Make a dict or something where it will create the texture for each player by colour whenever it first pops up, then will simply index said colour during render time. 
+    // Eventually will need more complicated stuff such as rotation and turret but for not a bounding box will do.
+}
 
 void DisplayInstance::refresh(){
     surface.clear();
