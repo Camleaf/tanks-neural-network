@@ -23,7 +23,7 @@ sf::Texture resizeTexture(sf::Texture &origTexture, sf::Vector2u size)
 }
 
 DisplayInstance::DisplayInstance(StateInstance& state): state(state) {
-    surface = sf::RenderTexture({DISPLAY_WIDTH,DISPLAY_HEIGHT});
+    surface = sf::RenderTexture({ARENA_WIDTH,ARENA_HEIGHT});
     background = sf::RenderTexture({ARENA_WIDTH,ARENA_HEIGHT});
     surface.clear();
     surface.display();
@@ -65,7 +65,7 @@ void DisplayInstance::generate_background(ArenaInstance &arenaInstance){
     background.display();
 }
 
-void DisplayInstance::render_entities(EntitiesInstance &entities){
+void DisplayInstance::render_entities(Entities& entities){
 
 }
 
@@ -74,7 +74,6 @@ void DisplayInstance::render_entities(EntitiesInstance &entities){
 void DisplayInstance::refresh(){
     surface.clear();
     sf::Sprite bgSprite(background.getTexture());
-    bgSprite.setPosition({state.cameraPosition.x-DISPLAY_WIDTH/2,state.cameraPosition.y-DISPLAY_WIDTH/2});
     surface.draw(bgSprite);
     surface.display(); 
 }

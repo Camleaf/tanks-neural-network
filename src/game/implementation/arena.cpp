@@ -14,8 +14,6 @@ void ArenaInstance::generate_walls(){
 
     bisect_walls({{0,0},{ARENA_TILES_HORIZONTAL,ARENA_TILES_VERTICAL}},WALL_DETAIL_LEVEL);
     
-    // No wall on start tile
-    arena[ARENA_TILES_VERTICAL/2][ARENA_TILES_HORIZONTAL/2] = false;
 
 };
 

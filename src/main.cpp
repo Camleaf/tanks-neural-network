@@ -7,7 +7,7 @@
 #include <thread>
 using namespace std::chrono_literals;
 
-#define GAME_COUNTS 10
+#define GAME_COUNTS 1
 
 typedef void (*threadRef)(int id);
 

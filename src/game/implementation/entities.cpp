@@ -2,22 +2,22 @@
 #include <gameInstance.hpp>
 
 
-EntitiesInstance::EntitiesInstance(StateInstance& state): state(state) {
-    player = Player();
-    this->state.player = &player;
+Entities::Entities(StateInstance& state): state(state) {
+    this->state.players = &players;
     this->state.bullets = &bullets;
-    this->state.enemies = &enemies;
 };
 
 
-Player& EntitiesInstance::get_player_object_reference(){
-    return player;
+
+std::vector<Player>& Entities::get_player_objects_reference(){
+    return players;
 }
 
-std::vector<Enemy>& EntitiesInstance::get_enemy_objects_reference(){
-    return enemies;
-}
-
-std::vector<Bullet>& EntitiesInstance::get_bullet_objects_reference(){
+std::vector<Bullet>& Entities::get_bullet_objects_reference(){
     return bullets;
 }
+
+
+
+
+

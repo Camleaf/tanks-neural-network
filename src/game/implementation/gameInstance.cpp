@@ -1,8 +1,10 @@
+#include "time_tools.hpp"
+#include <SFML/Graphics/Sprite.hpp>
 #include <gameInstance.hpp>
 #include <mutex>
 
 
-GameInstance::GameInstance() : arena(state), display(state){
+GameInstance::GameInstance() : arena(state), display(state), entities(state){
         display.generate_background(arena);
         display.refresh();
 }
@@ -17,12 +19,16 @@ static std::mutex window_init_mutex;
 // Main 
 void instance_mainloop(int id){
     sf::RenderWindow window;
+    GameInstance x;
+    sf::View view(sf::FloatRect({x.state.cameraPosition.x, x.state.cameraPosition.y}, {DISPLAY_WIDTH, DISPLAY_HEIGHT}));
     {
         std::lock_guard<std::mutex> lock(window_init_mutex);
         window.create(sf::VideoMode({ DISPLAY_WIDTH, DISPLAY_HEIGHT }), std::to_string(id));
+
+        window.setView(view);
     }
         
-    GameInstance x;
+    Clock clk(UPS);
     
 	while ( window.isOpen() )
 	{
@@ -49,10 +55,17 @@ void instance_mainloop(int id){
         if (sf::Keyboard::isKeyPressed(key::A)){
             x.state.cameraPosition.x += 2.5;
         }
+        
+
 		window.clear();
 
         x.display.refresh();
-		window.draw(x.display.get_drawable());
+
+        sf::Sprite windowSprite = x.display.get_drawable();
+        view.setCenter({x.state.cameraPosition.x,x.state.cameraPosition.y});
+		window.draw(windowSprite);
+
 		window.display();
+        clk.tick();
 	}
 }

@@ -24,17 +24,26 @@ class ArenaInstance{
 };
 
 
-class EntitiesInstance{
+class Entities{
     public:
-        EntitiesInstance(StateInstance& state);
-        Player& get_player_object_reference();
-        std::vector<Enemy>& get_enemy_objects_reference();
+        Entities(StateInstance& state);
+        std::vector<Player>& get_player_objects_reference();
         std::vector<Bullet>& get_bullet_objects_reference();
     private:
         StateInstance& state; 
-        Player player;
-        std::vector<Enemy> enemies;
+        std::vector<Player> players;
         std::vector<Bullet> bullets;
+};
+
+class Alliance{
+    public:
+        Alliance(StateInstance& state, int allianceId, sf::Color allianceColour = sf::Color::Blue);
+        int allianceId;
+        sf::Color allianceColour;
+        std::vector<Player>& get_player_objects_reference();
+    private:
+        StateInstance& state;
+        std::vector<Player> players;
 };
 
 
@@ -46,7 +55,7 @@ class DisplayInstance{
         // Sets the render surface to the background texture
         void refresh();
         void generate_background(ArenaInstance &arena);
-        void render_entities(EntitiesInstance &entities);
+        void render_entities(Entities &entities);
         
         sf::Sprite get_drawable();
 
@@ -59,8 +68,7 @@ class DisplayInstance{
 struct StateInstance {
     sf::Vector2f cameraPosition = {ARENA_WIDTH/2,ARENA_WIDTH/2};
     ArenaInstance::arenaGrid* arena;
-    Player* player;
-    std::vector<Enemy>* enemies;
+    std::vector<Player>* players;
     std::vector<Bullet>* bullets;
 };
 
@@ -73,7 +81,8 @@ class GameInstance{
 
     private:
         ArenaInstance arena;
-        //EntitiesInstance entities;        
+        Entities entities;
+        std::vector<Alliance> alliances;
 };
 
 void instance_mainloop(int id);
