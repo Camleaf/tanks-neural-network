@@ -1,9 +1,11 @@
 #ifndef CONSTANTS
 #define CONSTANTS
 
-const int CAMERA_PPF = 5; // pixels per frame.
+const float CAMERA_PPF = 5; // pixels per frame.
 
-const int PLAYER_PPF = 2;
+const float BULLET_PPF = 4;
+
+const float PLAYER_PPF = 2;
 
 const int UPS = 60;
 
@@ -28,6 +30,8 @@ const int ALLIANCE_SIZE = 3;
 
 // Sidelength in pixels
 const int PLAYER_BOUNDING_BOX_SIDELENGTH = 40;
+const int BULLET_BOUNDING_BOX_SIDELENGTH = 4;
+
 
 const int COLLISION_DETECT_TAXICAB_RANGE = 2*TILES_SIDELENGTH;
 #endif

@@ -7,6 +7,7 @@
 #include <constants.hpp>
 #include <entities.hpp>
 #include <map>
+#include <memory>
 #include <vector>
 
 struct StateInstance;
@@ -26,17 +27,17 @@ class ArenaInstance{
         
 };
 
-
+// Bullets are added from within the player classes for ease of architecture.
 class Entities{
     public:
         Entities(StateInstance& state);
-        std::vector<Bullet>& get_bullet_objects_reference();
+        std::vector<std::unique_ptr<Bullet>>& get_bullet_objects_reference();
         std::vector<std::unique_ptr<Player>>& get_player_objects_reference();
         void add_player(std::unique_ptr<Player> player);
         void update();
     private:
         StateInstance& state; 
-        std::vector<Bullet> bullets;
+        std::vector<std::unique_ptr<Bullet>> bullets;
         std::vector<std::unique_ptr<Player>> players;
 };
 
@@ -68,7 +69,7 @@ struct StateInstance {
     sf::Vector2f cameraPosition = {ARENA_WIDTH/2,ARENA_WIDTH/2};
     ArenaInstance::arenaGrid* arena;
     std::vector<std::unique_ptr<Player>>* players;
-    std::vector<Bullet>* bullets;
+    std::vector<std::unique_ptr<Bullet>>* bullets;
 };
 
 class GameInstance{

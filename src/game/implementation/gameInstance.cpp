@@ -70,6 +70,7 @@ void instance_mainloop(int id){
 
         x.entities.update();
         x.display.reset();
+        x.display.render_entities();
         x.display.render_players();
         x.display.flip();
 		

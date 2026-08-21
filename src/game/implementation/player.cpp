@@ -2,6 +2,7 @@
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include <cmath>
 #include <gameInstance.hpp>
 #include <entities.hpp>
@@ -46,7 +47,13 @@ void Player::set_turret_angle(sf::Angle turretAngle){
 }
 
 void Player::shoot(){
-
+    if (shootInterval.interval_passed()){
+        (*state.bullets).push_back(
+                std::move(
+                    std::make_unique<Bullet>(state,allianceId,get_position(),turretAngle)
+                )
+        );
+    }
 }
 
 
@@ -125,12 +132,20 @@ void HumanPlayer::step(){
     if (moveVector.x != 0){
         move({moveVector.x,0});
     }
+
+
     state.cameraPosition = get_position();
 
     // Calculate vector between mouse and player then atan2 to get angle
     sf::Vector2f mousePosition{sf::Mouse::getPosition()};
     sf::Vector2f diffVec = get_center_coord() - mousePosition;
     set_turret_angle(sf::radians(std::atan2(diffVec.y,diffVec.x)));
+
+
+    if (sf::Keyboard::isKeyPressed(key::Space)){
+        shoot();
+    }
+
 }
 
 BotPlayer::BotPlayer(StateInstance& state, int personalId, sf::Vector2f position, int allianceId) : Player(state, personalId, position, allianceId) {}

@@ -69,6 +69,14 @@ void DisplayInstance::generate_background(){
 
 void DisplayInstance::render_entities(){
     
+    sf::RectangleShape x;
+    x.setSize({BULLET_BOUNDING_BOX_SIDELENGTH,BULLET_BOUNDING_BOX_SIDELENGTH});
+    for (std::unique_ptr<Bullet>& bl : (*state.bullets)){
+        x.setPosition(bl->get_position());
+        x.setFillColor(sf::Color::Black);
+        surface.draw(x);
+    }
+
 }
 
 void DisplayInstance::create_alliance_texture(int allianceId, sf::Color allianceColour, sf::Color allianceAccent){
