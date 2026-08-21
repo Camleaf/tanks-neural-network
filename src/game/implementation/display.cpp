@@ -3,6 +3,7 @@
 #include <gameInstance.hpp>
 #include <constants.hpp>
 #include <colours.hpp>
+#include <memory>
 
 sf::Texture resizeTexture(sf::Texture &origTexture, sf::Vector2u size)
 {
@@ -75,19 +76,10 @@ void DisplayInstance::create_alliance_texture(int allianceId, sf::Color alliance
     texture.clear(sf::Color(255, 255, 255, 0));
     
     sf::Vector2u size = texture.getSize();
-    sf::RectangleShape x({(float)size.x,(float)size.y-4});
-    x.setPosition({0,2});
-    x.setFillColor(sf::Color(OFF_BLACK));
-    texture.draw(x);
-    x.setSize({(float)size.x-14,(float)size.y});
-    x.setPosition({7,0});
+    sf::RectangleShape x({(float)size.x,(float)size.y});
     x.setFillColor(allianceColour);
     texture.draw(x);
 
-    x.setSize({(float)size.x/2-10,(float)size.y/2-15});
-    x.setSize({20,30});
-    x.setFillColor(allianceAccent);
-    texture.draw(x);
    
     playerTextures.insert_or_assign(allianceId, texture.getTexture());
     
@@ -98,7 +90,7 @@ void DisplayInstance::create_alliance_texture(int allianceId, sf::Color alliance
 // Alliance textures MUST have been created by the time this is called, else error
 void DisplayInstance::render_players(){    
 
-    for (Player* pl : (*state.players)){
+    for (std::unique_ptr<Player>& pl : (*state.players)){
         int allianceId = pl->get_alliance_id();
         sf::Sprite x(playerTextures[allianceId]);
         x.setPosition(pl->get_position());

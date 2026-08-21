@@ -1,3 +1,5 @@
+#include "constants.hpp"
+#include "entities.hpp"
 #include "time_tools.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 #include <gameInstance.hpp>
@@ -5,12 +7,18 @@
 #include <mutex>
 
 
+
 GameInstance::GameInstance() : arena(state), display(state), entities(state){
         display.generate_background();
         display.reset();
         display.flip();
         
+        display.create_alliance_texture(0,sf::Color::Cyan,sf::Color::Cyan);
         
+        entities.add_player(std::make_unique<HumanPlayer>(state,0,sf::Vector2f{20,20},0));
+        humanPlayerExists = true;
+
+        entities.add_player(std::make_unique<BotPlayer>(state,1,sf::Vector2f{100,100},0));
 }
     
 
@@ -43,33 +51,35 @@ void instance_mainloop(int id){
 				window.close();
 		}
 
-
-        if (sf::Keyboard::isKeyPressed(key::W)){
-            x.state.cameraPosition.y -= 2.5;
+        if (!x.humanPlayerExists){ // Controlled through humanplayer class if that exists
+            if (sf::Keyboard::isKeyPressed(key::W)){
+                x.state.cameraPosition.y -= CAMERA_PPF;
+            }
+            if (sf::Keyboard::isKeyPressed(key::S)){ 
+                x.state.cameraPosition.y += CAMERA_PPF;
+            }
+            if (sf::Keyboard::isKeyPressed(key::D)){
+            
+                x.state.cameraPosition.x += CAMERA_PPF;
+            }
+            if (sf::Keyboard::isKeyPressed(key::A)){
+                x.state.cameraPosition.x -= CAMERA_PPF;
+            }
         }
-        if (sf::Keyboard::isKeyPressed(key::S)){ 
-            x.state.cameraPosition.y += 2.5;
-        }
-        if (sf::Keyboard::isKeyPressed(key::D)){
         
-            x.state.cameraPosition.x += 2.5;
-        }
-        if (sf::Keyboard::isKeyPressed(key::A)){
-            x.state.cameraPosition.x -= 2.5;
-        }
-        
 
-		window.clear();
-
-        
+        x.entities.update();
         x.display.reset();
         x.display.render_players();
         x.display.flip();
-        sf::Sprite windowSprite = x.display.get_drawable();
-		window.draw(windowSprite);
+		
         view.setCenter({x.state.cameraPosition.x,x.state.cameraPosition.y});
+        
+        sf::Sprite windowSprite = x.display.get_drawable();
+        window.clear();
         window.setView(view);
+		window.draw(windowSprite);
 		window.display();
-        //clk.tick();
+        clk.tick();
 	}
 }

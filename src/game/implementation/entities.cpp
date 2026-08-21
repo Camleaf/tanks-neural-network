@@ -1,5 +1,6 @@
 #include <entities.hpp>
 #include <gameInstance.hpp>
+#include <memory>
 
 
 Entities::Entities(StateInstance& state): state(state) {
@@ -13,10 +14,17 @@ std::vector<Bullet>& Entities::get_bullet_objects_reference(){
 }
 
 
-std::vector<Player*>& Entities::get_player_objects_reference(){
+std::vector<std::unique_ptr<Player>>& Entities::get_player_objects_reference(){
     return players;
 }
 
-void Entities::add_player(Player* player){
-    players.push_back(player); 
+void Entities::add_player(std::unique_ptr<Player> player){
+    players.push_back(std::move(player)); 
+}
+
+
+void Entities::update(){
+    for (std::unique_ptr<Player>& pl : players){
+        pl->step();
+    }
 }

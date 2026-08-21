@@ -31,12 +31,13 @@ class Entities{
     public:
         Entities(StateInstance& state);
         std::vector<Bullet>& get_bullet_objects_reference();
-        std::vector<Player*>& get_player_objects_reference();
-        void add_player(Player* player);
+        std::vector<std::unique_ptr<Player>>& get_player_objects_reference();
+        void add_player(std::unique_ptr<Player> player);
+        void update();
     private:
         StateInstance& state; 
         std::vector<Bullet> bullets;
-        std::vector<Player*> players;
+        std::vector<std::unique_ptr<Player>> players;
 };
 
 
@@ -66,7 +67,7 @@ class DisplayInstance{
 struct StateInstance {
     sf::Vector2f cameraPosition = {ARENA_WIDTH/2,ARENA_WIDTH/2};
     ArenaInstance::arenaGrid* arena;
-    std::vector<Player*>* players;
+    std::vector<std::unique_ptr<Player>>* players;
     std::vector<Bullet>* bullets;
 };
 
@@ -75,11 +76,10 @@ class GameInstance{
         StateInstance state;
         GameInstance();
         DisplayInstance display;
-        
-
+        Entities entities;
+        bool humanPlayerExists = false;
     private:
         ArenaInstance arena;
-        Entities entities;
 };
 
 void instance_mainloop(int id);
