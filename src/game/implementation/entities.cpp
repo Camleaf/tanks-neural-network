@@ -4,6 +4,7 @@
 
 Entities::Entities(StateInstance& state): state(state) {
     this->state.bullets = &bullets;
+    this->state.players = &players;
 };
 
 
@@ -12,13 +13,10 @@ std::vector<Bullet>& Entities::get_bullet_objects_reference(){
 }
 
 
-
-Alliance::Alliance(StateInstance& state, int allianceId, sf::Color allianceColour) : state(state){
-    this->allianceId = allianceId;
-    this->allianceColour = allianceColour;
-}
-
-std::vector<Player>& Alliance::get_player_objects_reference(){
+std::vector<Player*>& Entities::get_player_objects_reference(){
     return players;
 }
 
+void Entities::add_player(Player* player){
+    players.push_back(player); 
+}

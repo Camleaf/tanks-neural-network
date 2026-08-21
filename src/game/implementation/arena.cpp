@@ -1,22 +1,37 @@
 #include "constants.hpp"
 #include <SFML/Graphics/Rect.hpp>
+#include <SFML/System/Vector2.hpp>
 #include <gameInstance.hpp>
 #include <random>
 #include <algorithm>
 
 ArenaInstance::ArenaInstance(StateInstance& state): state(state) {
-    generate_walls();
+    generate_arena_standard();
     this->state.arena = &arena;
 };
 
-void ArenaInstance::generate_walls(){
+void ArenaInstance::generate_arena_standard(){
+
+    // Create grid
     std::fill(&arena[0][0], &arena[0][0]+(ARENA_TILES_VERTICAL*ARENA_TILES_HORIZONTAL),false);
 
     bisect_walls({{0,0},{ARENA_TILES_HORIZONTAL,ARENA_TILES_VERTICAL}},WALL_DETAIL_LEVEL);
-    
 
+    // Open corners for alliances
+    const int corner_side_lengths = 2; 
+    
+    // finish implementing
 };
 
+
+void ArenaInstance::generate_arena_movement_training(){
+    std::fill(&arena[0][0], &arena[0][0]+(ARENA_TILES_VERTICAL*ARENA_TILES_HORIZONTAL),true);
+}
+
+
+void ArenaInstance::generate_arena_shooting(){
+    std::fill(&arena[0][0], &arena[0][0]+(ARENA_TILES_VERTICAL*ARENA_TILES_HORIZONTAL),true);
+}
 
 
 

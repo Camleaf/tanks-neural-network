@@ -6,14 +6,14 @@
 #include <entities.hpp>
 
 
-Player::Player(StateInstance& state, sf::Vector2f position, int allianceId, sf::Color colour, int shootDelay) : state(state), shootInterval(shootDelay){
+Player::Player(StateInstance& state, sf::Vector2f position, int allianceId, sf::Color colour, sf::Color accent, int shootDelay) : state(state), shootInterval(shootDelay){
     shootInterval.reset_time();
     this->bounding_box = sf::FloatRect(position,{PLAYER_BOUNDING_BOX_SIDELENGTH,PLAYER_BOUNDING_BOX_SIDELENGTH});
     this->allianceId = allianceId;
     this->colour = colour;
+    this->accent = accent;
     turretAngle=sf::degrees(0);
 }
-
 
 int Player::get_alliance_id(){
     return allianceId;
@@ -29,6 +29,10 @@ sf::FloatRect Player::get_bounding_box(){
 
 sf::Vector2f Player::get_center_coord(){
     return bounding_box.getCenter();
+}
+
+sf::Vector2f Player::get_position(){
+    return bounding_box.position;
 }
 
 sf::Angle Player::get_turret_angle(){
@@ -68,28 +72,25 @@ bool Player::move(sf::Vector2f vector, float magnitude){
         }
     }
     
-    for (Alliance al : (*state.alliances)){
-        for (Player pl : (al.get_player_objects_reference())){
-            
-            sf::Vector2f otherCenterPos = pl.get_center_coord();
-            
-            if (otherCenterPos.x + otherCenterPos.y >= COLLISION_DETECT_TAXICAB_RANGE) continue;
+    for (Player* pl : (*state.players)){
+        
+        sf::Vector2f otherCenterPos = pl->get_center_coord();
+        
+        if (otherCenterPos.x + otherCenterPos.y >= COLLISION_DETECT_TAXICAB_RANGE) continue;
 
-            sf::FloatRect otherBound = pl.get_bounding_box();
+        sf::FloatRect otherBound = pl->get_bounding_box();
 
-            if (otherBound.findIntersection(tentativeBounds).has_value()){
-                return false;
-            }
-            
+        if (otherBound.findIntersection(tentativeBounds).has_value()){
+            return false;
         }
+            
     }
     return true;
 }
 
 
 
-HumanPlayer::HumanPlayer(StateInstance& state, sf::Vector2f position, int allianceId, sf::Color colour) 
-    : Player(state, position, allianceId, colour) {
+HumanPlayer::HumanPlayer(StateInstance& state, sf::Vector2f position, int allianceId, sf::Color colour, sf::Color accent) : Player(state, position, allianceId, colour, accent) {
 }
 
 

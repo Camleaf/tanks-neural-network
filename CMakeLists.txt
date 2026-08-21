@@ -14,7 +14,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 
 include("$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
-set(SFML_STATIC_LIBRARIES OFF)
+set(SFML_STATIC_LIBRARIES ON)
 find_package(SFML COMPONENTS Graphics REQUIRED)
 
 add_executable(main src/main.cpp)

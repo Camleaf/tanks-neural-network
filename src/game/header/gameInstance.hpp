@@ -6,6 +6,7 @@
 #include <array>
 #include <constants.hpp>
 #include <entities.hpp>
+#include <map>
 #include <vector>
 
 struct StateInstance;
@@ -15,7 +16,9 @@ class ArenaInstance{
         ArenaInstance(StateInstance& state);
         typedef std::array<std::array<bool,ARENA_TILES_HORIZONTAL>,ARENA_TILES_VERTICAL> arenaGrid; 
         arenaGrid& get_arena();
-        void generate_walls();
+        void generate_arena_standard();
+        void generate_arena_movement_training();
+        void generate_arena_shooting();
     private: 
         StateInstance& state; 
         arenaGrid arena;      
@@ -28,21 +31,14 @@ class Entities{
     public:
         Entities(StateInstance& state);
         std::vector<Bullet>& get_bullet_objects_reference();
+        std::vector<Player*>& get_player_objects_reference();
+        void add_player(Player* player);
     private:
         StateInstance& state; 
         std::vector<Bullet> bullets;
+        std::vector<Player*> players;
 };
 
-class Alliance{
-    public:
-        Alliance(StateInstance& state, int allianceId, sf::Color allianceColour = sf::Color::Blue);
-        int allianceId;
-        sf::Color allianceColour;
-        std::vector<Player>& get_player_objects_reference();
-    private:
-        StateInstance& state;
-        std::vector<Player> players;
-};
 
 
 class DisplayInstance{
@@ -51,14 +47,17 @@ class DisplayInstance{
         DisplayInstance(StateInstance& state);
         
         // Sets the render surface to the background texture
-        void refresh();
+        void reset();
+        void flip();
         void generate_background(); // Builds f stateinstance
         void render_entities(); // uses stateinstance
         void render_players(); // uses stateinstance
         sf::Sprite get_drawable();
+        void create_alliance_texture(int allianceId, sf::Color allianceColour, sf::Color allianceAccent);
+        
 
     private:
-        void create_player_texture(sf::Color colour);
+        std::map<int, sf::Texture> playerTextures;
         StateInstance& state; 
         sf::RenderTexture background;
 };
@@ -67,7 +66,7 @@ class DisplayInstance{
 struct StateInstance {
     sf::Vector2f cameraPosition = {ARENA_WIDTH/2,ARENA_WIDTH/2};
     ArenaInstance::arenaGrid* arena;
-    std::vector<Alliance>* alliances;
+    std::vector<Player*>* players;
     std::vector<Bullet>* bullets;
 };
 

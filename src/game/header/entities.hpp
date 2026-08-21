@@ -14,25 +14,26 @@ const int COLLISION_DETECT_TAXICAB_RANGE = 5;
 
 class Player{
     public:
-        Player(StateInstance& state, sf::Vector2f position, int allianceId, sf::Color colour, int shootDelay=400);
+        Player(StateInstance& state, sf::Vector2f position, int allianceId, sf::Color colour, sf::Color accent, int shootDelay=400);
         int get_alliance_id();
         sf::Color get_alliance_colour();
         sf::FloatRect get_bounding_box();
         sf::Vector2f get_center_coord();
-
+        sf::Vector2f get_position();
         void set_turret_angle(sf::Angle turretAngle);
         sf::Angle get_turret_angle();
 
         bool move(sf::Vector2f vector, float magnitude=2);
         void shoot();
 
-        virtual void step();
+        virtual void step() = 0;
 
     protected:
         StateInstance& state;
         Interval shootInterval;
         sf::FloatRect bounding_box;
         sf::Color colour;
+        sf::Color accent;
         sf::Angle turretAngle;
         int allianceId;
 
@@ -42,21 +43,21 @@ class Player{
 class BotPlayer : public Player {
     public:
         
-        BotPlayer(StateInstance& state, sf::Vector2f position, int allianceId, sf::Color colour);
-        void step();
+        BotPlayer(StateInstance& state, sf::Vector2f position, int allianceId, sf::Color colour, sf::Color accent);
+        void step() override;
 };
 
 class HumanPlayer : public Player {
     public:
-        HumanPlayer(StateInstance& state, sf::Vector2f position, int allianceId, sf::Color colour);
-        void step();
+        HumanPlayer(StateInstance& state, sf::Vector2f position, int allianceId, sf::Color colour, sf::Color accent);
+        void step() override;
 };
 
 
 class NeuralNetPlayer: public Player {
     public:
-        NeuralNetPlayer(StateInstance& state, sf::Vector2f position, int allianceId, sf::Color colour);
-        void step();
+        NeuralNetPlayer(StateInstance& state, sf::Vector2f position, int allianceId, sf::Color colour, sf::Color accent);
+        void step() override;
 };
 
 
