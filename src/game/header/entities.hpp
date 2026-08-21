@@ -64,7 +64,7 @@ class NeuralNetPlayer: public Player {
 
 class Bullet{
     public:
-        Bullet(StateInstance& state, int allianceId, sf::Vector2f position, sf::Angle direction);
+        Bullet(StateInstance& state, int ownerId, int allianceId, sf::Vector2f position, sf::Angle direction);
         sf::Vector2f get_center_coord();
         void step();
         bool is_alive();
@@ -75,6 +75,7 @@ class Bullet{
         sf::FloatRect bounding_box = {{0.f,0.f},{BULLET_BOUNDING_BOX_SIDELENGTH,BULLET_BOUNDING_BOX_SIDELENGTH}};
         sf::Vector2f translationVector;
         float distanceTravelled;
+        int ownerId;
         int ownerAllianceId;
         bool alive = true;
 };

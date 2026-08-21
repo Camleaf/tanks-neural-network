@@ -66,10 +66,11 @@ class DisplayInstance{
 
 
 struct StateInstance {
-    sf::Vector2f cameraPosition = {ARENA_WIDTH/2,ARENA_WIDTH/2};
+    sf::Vector2f cameraPosition = {ARENA_WIDTH/2.f,ARENA_WIDTH/2.f};
     ArenaInstance::arenaGrid* arena;
     std::vector<std::unique_ptr<Player>>* players;
     std::vector<std::unique_ptr<Bullet>>* bullets;
+    sf::Window* window;
 };
 
 class GameInstance{

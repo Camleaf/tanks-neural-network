@@ -3,9 +3,12 @@
 
 const float CAMERA_PPF = 5; // pixels per frame.
 
-const float BULLET_PPF = 4;
+const float BULLET_PPF = 10;
 
 const float PLAYER_PPF = 2;
+
+// Magnitude in pixels of the bullet starting offset
+const float BULLET_STARTING_OFFSET = 10;
 
 const int UPS = 60;
 

@@ -48,9 +48,10 @@ void Player::set_turret_angle(sf::Angle turretAngle){
 
 void Player::shoot(){
     if (shootInterval.interval_passed()){
-        (*state.bullets).push_back(
+        
+        state.bullets->push_back(
                 std::move(
-                    std::make_unique<Bullet>(state,allianceId,get_position(),turretAngle)
+                    std::make_unique<Bullet>(state,personalId,allianceId,get_center_coord(),turretAngle)
                 )
         );
     }
@@ -114,19 +115,19 @@ void HumanPlayer::step(){
 
     sf::Vector2f moveVector{0,0};
 
-    if (sf::Keyboard::isKeyPressed(key::Up)){
+    if (sf::Keyboard::isKeyPressed(key::W)){
         moveVector.y -= PLAYER_PPF;
     }
-    if (sf::Keyboard::isKeyPressed(key::Down)){ 
+    if (sf::Keyboard::isKeyPressed(key::S)){ 
         moveVector.y += PLAYER_PPF;
     }
     if (moveVector.y != 0){
         move({0,moveVector.y});
     }
-    if (sf::Keyboard::isKeyPressed(key::Left)){
+    if (sf::Keyboard::isKeyPressed(key::A)){
         moveVector.x -= PLAYER_PPF;
     }
-    if (sf::Keyboard::isKeyPressed(key::Right)){
+    if (sf::Keyboard::isKeyPressed(key::D)){
         moveVector.x += PLAYER_PPF;
     }
     if (moveVector.x != 0){
@@ -134,13 +135,12 @@ void HumanPlayer::step(){
     }
 
 
-    state.cameraPosition = get_position();
+    state.cameraPosition = get_center_coord();
 
     // Calculate vector between mouse and player then atan2 to get angle
-    sf::Vector2f mousePosition{sf::Mouse::getPosition()};
-    sf::Vector2f diffVec = get_center_coord() - mousePosition;
-    set_turret_angle(sf::radians(std::atan2(diffVec.y,diffVec.x)));
-
+    sf::Vector2f mousePosition{sf::Mouse::getPosition(*state.window)};
+    sf::Vector2f diffVec = sf::Vector2f{DISPLAY_WIDTH/2.f,DISPLAY_HEIGHT/2.f} - mousePosition;
+    set_turret_angle(sf::radians(std::atan2(diffVec.y,diffVec.x)+M_PI));
 
     if (sf::Keyboard::isKeyPressed(key::Space)){
         shoot();

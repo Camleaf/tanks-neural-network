@@ -40,8 +40,10 @@ void instance_mainloop(int id){
         window.setView(view);
         window.setSize({DISPLAY_WIDTH, DISPLAY_HEIGHT});
     }
-        
-    Clock clk(UPS);
+    
+    x.state.window = &window;
+    window.setFramerateLimit(UPS); 
+    //Clock clk(UPS);
     
 	while ( window.isOpen() )
 	{
@@ -81,6 +83,5 @@ void instance_mainloop(int id){
         window.setView(view);
 		window.draw(windowSprite);
 		window.display();
-        clk.tick();
 	}
 }
