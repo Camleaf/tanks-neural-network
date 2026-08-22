@@ -1,9 +1,9 @@
 #ifndef CONSTANTS
 #define CONSTANTS
 
+#include <SFML/System/Vector2.hpp>
 const float PLAYER_HEALTH = 255;
 const float BULLET_DAMAGE = 100;
-
 
 const float CAMERA_PPF = 5; // pixels per frame.
 
@@ -45,10 +45,13 @@ const int ALLIANCE_SIZE = 3;
 
 // Sidelength in pixels
 const int PLAYER_BOUNDING_BOX_SIDELENGTH = 40;
-const int BULLET_BOUNDING_BOX_SIDELENGTH = 4;
+const int BULLET_BOUNDING_BOX_SIDELENGTH = 8;
 
 
 const int COLLISION_DETECT_TAXICAB_RANGE = 2*TILES_SIDELENGTH;
+
+
+const sf::Vector2i DIRECTIONS[4] = {{1,0},{0,1},{-1,0},{0,-1}};
 #endif
 
 

@@ -22,8 +22,10 @@ class ArenaInstance{
         void generate_arena_shooting();
     private: 
         StateInstance& state; 
-        arenaGrid arena;      
+        arenaGrid arena;
+        std::vector<sf::Vector2i> spawnTiles;
         void bisect_walls(sf::IntRect container, int detail);
+        int find_spawnable_region();
         
 };
 
@@ -68,9 +70,11 @@ class DisplayInstance{
 struct StateInstance {
     sf::Vector2f cameraPosition = {ARENA_WIDTH/2.f,ARENA_WIDTH/2.f};
     ArenaInstance::arenaGrid* arena;
+    std::vector<sf::Vector2i>* spawnTiles;
     std::vector<std::unique_ptr<Player>>* players;
     std::vector<std::unique_ptr<Bullet>>* bullets;
     sf::Window* window;
+
 };
 
 class GameInstance{

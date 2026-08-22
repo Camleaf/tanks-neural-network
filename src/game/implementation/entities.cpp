@@ -25,6 +25,7 @@ std::vector<std::unique_ptr<Player>>& Entities::get_player_objects_reference(){
 }
 
 void Entities::add_player(std::unique_ptr<Player> player){
+    
     players.push_back(std::move(player)); 
 }
 
