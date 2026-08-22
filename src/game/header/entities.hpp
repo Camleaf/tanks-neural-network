@@ -19,9 +19,12 @@ class Player{
         sf::FloatRect get_bounding_box();
         sf::Vector2f get_center_coord();
         sf::Vector2f get_position();
+        void set_position(sf::Vector2f position);
+        void set_grid_position(sf::Vector2i position);
         void set_turret_angle(sf::Angle turretAngle);
         sf::Angle get_turret_angle();
         float get_health();
+        void reset_health();
         bool move(sf::Vector2f vector, float magnitude=2);
         void shoot();
         bool is_alive();

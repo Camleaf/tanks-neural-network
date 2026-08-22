@@ -1,3 +1,4 @@
+#include "constants.hpp"
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/WindowEnums.hpp>
@@ -7,6 +8,7 @@
 #include <gameInstance.hpp>
 #include <iostream>
 #include <memory>
+#include <random>
 
 
 Entities::Entities(StateInstance& state): state(state) {
@@ -24,23 +26,68 @@ std::vector<std::unique_ptr<Player>>& Entities::get_player_objects_reference(){
     return players;
 }
 
-void Entities::add_player(std::unique_ptr<Player> player){
+
+sf::Vector2i Entities::pick_starting_location(int playerId){
+    sf::Vector2i start = {0,0};
+    int i = 0, taxicabDist = 0;
     
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    if (state.spawnTiles->size() == 0) return {0,0};
+    std::uniform_int_distribution<std::mt19937::result_type> spawnPick(0,state.spawnTiles->size()-1);
+    do {
+        taxicabDist = 0;
+        start = (*state.spawnTiles)[spawnPick(rng)];
+       
+        for (std::unique_ptr<Player>& pl : (*state.players)){
+            if (pl->get_personal_id() == playerId) continue;
+            sf::Vector2f otherCenterPos = pl->get_center_coord();
+            int tempTaxicabDist = std::abs(otherCenterPos.x-(start.x*TILES_SIDELENGTH)) + std::abs(otherCenterPos.y-(start.y*TILES_SIDELENGTH));    
+            
+            if (taxicabDist > tempTaxicabDist) continue;
+            taxicabDist = tempTaxicabDist;
+        }
+
+
+        i++;
+    } while (taxicabDist < COLLISION_DETECT_TAXICAB_RANGE*2 && i < 10); 
+
+    return start;
+}
+
+
+void Entities::add_player(std::unique_ptr<Player> player){
+    player->set_grid_position(sf::Vector2i(pick_starting_location(player->get_personal_id())));
     players.push_back(std::move(player)); 
 }
 
 
-void Entities::update(){
+void Entities::respawn_enabled(bool enabled){
+    respawn = enabled;
+}
 
-    players.erase(
-        std::remove_if(players.begin(), players.end(), 
-            [](std::unique_ptr<Player>& pl) {
-                pl->step();
-                return !pl->is_alive();
-            }
-        ),
-        players.end()
-    );
+
+void Entities::update(){
+    if (!respawn){
+        players.erase(
+            std::remove_if(players.begin(), players.end(), 
+                [](std::unique_ptr<Player>& pl) {
+                    pl->step();
+                    return !pl->is_alive();
+                }
+            ),
+            players.end()
+        );
+    } else {
+        for (std::unique_ptr<Player>& pl : (*state.players)){
+            pl->step();
+            if (pl->is_alive()) continue;
+            pl->reset_health();
+            pl->set_grid_position(
+                sf::Vector2i(pick_starting_location(pl->get_personal_id()))
+            );
+        }
+    }
     
     bullets.erase(
         std::remove_if(bullets.begin(), bullets.end(), 
@@ -103,10 +150,11 @@ bool Bullet::move(){
     sf::Vector2f centerPos = get_center_coord();
     for (std::unique_ptr<Player>& pl : (*state.players)){
         if (pl->get_personal_id() == ownerId) continue;
+        if (pl->get_alliance_id() == ownerAllianceId) continue;
         sf::Vector2f otherCenterPos = pl->get_center_coord();
         
 
-        if (otherCenterPos.x + otherCenterPos.y-centerPos.x-centerPos.y >= COLLISION_DETECT_TAXICAB_RANGE) continue;
+        if (std::abs(otherCenterPos.x-centerPos.x) + std::abs(otherCenterPos.y-centerPos.y) >= COLLISION_DETECT_TAXICAB_RANGE) continue;
 
         sf::FloatRect otherBound = pl->get_bounding_box();
         

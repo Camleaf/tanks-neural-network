@@ -114,9 +114,9 @@ void ArenaInstance::bisect_walls(sf::IntRect container, int detail){
     
     const std::array<sf::IntRect,4> new_containers = {
         sf::IntRect({left,top},{col_line-1,row_line-1}),
-        sf::IntRect({left,top+row_line+1},{col_line-1,height-row_line}),
-        sf::IntRect({left+col_line+1,top},{width-col_line,row_line-1}),
-        sf::IntRect({left+col_line+1,top+row_line+1},{width-col_line,height-row_line})
+        sf::IntRect({left,top+row_line+1},{col_line-1,height-row_line-1}),
+        sf::IntRect({left+col_line+1,top},{width-col_line-1,row_line-1}),
+        sf::IntRect({left+col_line+1,top+row_line+1},{width-col_line-1,height-row_line-1})
     };
 
     for (sf::IntRect cont : new_containers){

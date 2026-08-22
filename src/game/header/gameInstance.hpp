@@ -36,9 +36,12 @@ class Entities{
         std::vector<std::unique_ptr<Bullet>>& get_bullet_objects_reference();
         std::vector<std::unique_ptr<Player>>& get_player_objects_reference();
         void add_player(std::unique_ptr<Player> player);
+        sf::Vector2i pick_starting_location(int playerId);
         void update();
+        void respawn_enabled(bool enabled);
     private:
-        StateInstance& state; 
+        bool respawn = false; 
+        StateInstance& state;
         std::vector<std::unique_ptr<Bullet>> bullets;
         std::vector<std::unique_ptr<Player>> players;
 };

@@ -26,6 +26,11 @@ float Player::get_health(){
     return health;
 }
 
+void Player::reset_health(){
+    health = PLAYER_HEALTH;
+    alive = true;
+}
+
 bool Player::is_alive(){
     return alive;
 }
@@ -48,6 +53,18 @@ sf::Vector2f Player::get_position(){
 
 sf::Angle Player::get_turret_angle(){
     return turretAngle;
+}
+
+void Player::set_position(sf::Vector2f position){
+    this->bounding_box.position = position;
+}
+
+void Player::set_grid_position(sf::Vector2i position){
+    sf::Vector2f pos = {(float)position.x,(float)position.y};
+    pos *= (float)TILES_SIDELENGTH;
+    pos.x += 10; // fudge factor
+    pos.y += 10;
+    this->bounding_box.position = pos;
 }
 
 void Player::damage(float damage){
@@ -109,7 +126,7 @@ bool Player::move(sf::Vector2f vector, float magnitude){
         sf::Vector2f otherCenterPos = pl->get_center_coord();
         
 
-        if (otherCenterPos.x + otherCenterPos.y-centerPos.x-centerPos.y >= COLLISION_DETECT_TAXICAB_RANGE) continue;
+        if (std::abs(otherCenterPos.x-centerPos.x) + std::abs(otherCenterPos.y-centerPos.y) >= COLLISION_DETECT_TAXICAB_RANGE) continue;
 
         sf::FloatRect otherBound = pl->get_bounding_box();
         

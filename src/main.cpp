@@ -10,7 +10,7 @@ using namespace std::chrono_literals;
 #define GAME_COUNTS 1
 
 typedef void (*threadRef)(int id);
-
+/*
 int main()
 {   
     XInitThreads();
@@ -29,4 +29,8 @@ int main()
             }
         }
     }
+}*/
+
+int main(){
+    instance_mainloop(0);
 }

@@ -1,6 +1,5 @@
 #include "constants.hpp"
 #include "entities.hpp"
-#include "time_tools.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 #include <gameInstance.hpp>
 #include <iostream>
@@ -14,11 +13,15 @@ GameInstance::GameInstance() : arena(state), display(state), entities(state){
         display.flip();
         
         display.create_alliance_texture(0,sf::Color::Cyan,sf::Color::Cyan);
-        
+        display.create_alliance_texture(1,sf::Color::Cyan,sf::Color::Cyan);
+        display.create_alliance_texture(2,sf::Color::Cyan,sf::Color::Cyan);
+        entities.respawn_enabled(true); 
         entities.add_player(std::make_unique<HumanPlayer>(state,0,sf::Vector2f{20,20},0));
         humanPlayerExists = true;
 
         entities.add_player(std::make_unique<BotPlayer>(state,1,sf::Vector2f{100,100},0));
+        entities.add_player(std::make_unique<BotPlayer>(state,2,sf::Vector2f{100,100},1));
+        entities.add_player(std::make_unique<BotPlayer>(state,3,sf::Vector2f{100,100},2));
 }
     
 
@@ -31,7 +34,9 @@ static std::mutex window_init_mutex;
 // Main 
 void instance_mainloop(int id){
     sf::RenderWindow window;
+
     GameInstance x;
+
     sf::View view(sf::FloatRect({x.state.cameraPosition.x, x.state.cameraPosition.y}, {DISPLAY_WIDTH, DISPLAY_HEIGHT}));
     {
         std::lock_guard<std::mutex> lock(window_init_mutex);

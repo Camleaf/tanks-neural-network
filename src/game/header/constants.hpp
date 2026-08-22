@@ -2,6 +2,7 @@
 #define CONSTANTS
 
 #include <SFML/System/Vector2.hpp>
+
 const float PLAYER_HEALTH = 255;
 const float BULLET_DAMAGE = 100;
 
