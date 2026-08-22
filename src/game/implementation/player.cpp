@@ -22,6 +22,14 @@ int Player::get_alliance_id(){
     return allianceId;
 }
 
+float Player::get_health(){
+    return health;
+}
+
+bool Player::is_alive(){
+    return alive;
+}
+
 int Player::get_personal_id(){
     return personalId;
 }
@@ -40,6 +48,14 @@ sf::Vector2f Player::get_position(){
 
 sf::Angle Player::get_turret_angle(){
     return turretAngle;
+}
+
+void Player::damage(float damage){
+    health -= damage;
+    if (health <= 0){
+        alive = false;
+        health = 0;
+    }
 }
 
 void Player::set_turret_angle(sf::Angle turretAngle){

@@ -2,6 +2,7 @@ sudo apt update
 
 
 echo "Installing deps"
+sudo apt-get install libx11-dev libxi-dev libxrandr-dev libxcursor-dev libxi-dev libudev-dev libgl1-mesa-dev
 
 
 echo "Setting up VCPKG"

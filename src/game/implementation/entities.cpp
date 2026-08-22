@@ -30,9 +30,16 @@ void Entities::add_player(std::unique_ptr<Player> player){
 
 
 void Entities::update(){
-    for (std::unique_ptr<Player>& pl : players){
-        pl->step();
-    }
+
+    players.erase(
+        std::remove_if(players.begin(), players.end(), 
+            [](std::unique_ptr<Player>& pl) {
+                pl->step();
+                return !pl->is_alive();
+            }
+        ),
+        players.end()
+    );
     
     bullets.erase(
         std::remove_if(bullets.begin(), bullets.end(), 
@@ -103,6 +110,7 @@ bool Bullet::move(){
         sf::FloatRect otherBound = pl->get_bounding_box();
         
         if (otherBound.findIntersection(tentativeBounds).has_value()){
+            pl->damage(damage); 
             return false;
         }
             
@@ -122,5 +130,12 @@ bool Bullet::is_alive(){
 void Bullet::step(){
     if (!alive) return;
     alive = move();
+
+    if (tick >= (int)BULLET_DROPOFF_FRAMES){
+        damage*=BULLET_DROPOFF_FACTOR;
+        tick = 0;
+    }
+
+    tick++;
 }
 

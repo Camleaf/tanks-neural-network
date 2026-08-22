@@ -21,13 +21,16 @@ class Player{
         sf::Vector2f get_position();
         void set_turret_angle(sf::Angle turretAngle);
         sf::Angle get_turret_angle();
-
+        float get_health();
         bool move(sf::Vector2f vector, float magnitude=2);
         void shoot();
-        
+        bool is_alive();
+        void damage(float damage);
         virtual void step() = 0;
 
     protected:
+        float health = PLAYER_HEALTH;
+        bool alive = true;
         int personalId;
         StateInstance& state;
         Interval shootInterval;
@@ -74,7 +77,8 @@ class Bullet{
         StateInstance& state;
         sf::FloatRect bounding_box = {{0.f,0.f},{BULLET_BOUNDING_BOX_SIDELENGTH,BULLET_BOUNDING_BOX_SIDELENGTH}};
         sf::Vector2f translationVector;
-        float distanceTravelled;
+        int damage = BULLET_DAMAGE;
+        int tick = 0;
         int ownerId;
         int ownerAllianceId;
         bool alive = true;

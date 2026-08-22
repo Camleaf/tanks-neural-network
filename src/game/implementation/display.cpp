@@ -1,4 +1,5 @@
 #include "constants.hpp"
+#include "entities.hpp"
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <gameInstance.hpp>
 #include <constants.hpp>
@@ -102,6 +103,8 @@ void DisplayInstance::render_players(){
         int allianceId = pl->get_alliance_id();
         sf::Sprite x(playerTextures[allianceId]);
         x.setPosition(pl->get_position());
+        uint8_t player_health = pl->get_health(); // If changing health MUST change this
+        x.setColor({player_health, player_health, player_health, 255});
         surface.draw(x);
     }
 }

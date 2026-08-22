@@ -1,11 +1,23 @@
 #ifndef CONSTANTS
 #define CONSTANTS
 
+const float PLAYER_HEALTH = 255;
+const float BULLET_DAMAGE = 100;
+
+
 const float CAMERA_PPF = 5; // pixels per frame.
 
-const float BULLET_PPF = 10;
+const float BULLET_PPF = 15;
 
 const float PLAYER_PPF = 2;
+
+// bullet damage multiplier
+const float BULLET_DROPOFF_FACTOR = 0.8f;
+// pixel distance interval to apply bullet dropoff
+const float BULLET_DROPOFF_DISTANCE = 70;
+// frame interval to apply bullet dropoff
+const int BULLET_DROPOFF_FRAMES = BULLET_DROPOFF_DISTANCE / BULLET_PPF;
+
 
 // Magnitude in pixels of the bullet starting offset
 const float BULLET_STARTING_OFFSET = 10;
